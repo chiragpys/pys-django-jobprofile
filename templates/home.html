@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Home {% endblock %}
+{% block pagecontent %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if request.user.is_superuser %}
+<h3>Welcome, Admin {{user.username|title}}</h3>
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="{% url 'users:managerCreate'%}" class="btn btn-secondary">Assign Maneger</a>
+</div>
+
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="{% url 'users:manager-list'%}" class="btn btn-secondary">Manager List</a>
+</div>
+
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="#" class="btn btn-secondary">Create User</a>
+</div>
+
+
+{% elif request.user.is_manager %}
+<h3>Welcome, Manager {{user.username|title}}</h3>
+
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="{% url 'users:agent-assign'%}" class="btn btn-secondary">Assign Agent</a>
+</div>
+
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="{% url 'users:agent-list'%}" class="btn btn-secondary">Agent List</a>
+</div>
+
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="#" class="btn btn-secondary">Create User</a>
+</div>
+
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="#" class="btn btn-secondary">Total Request</a>
+</div>
+
+
+{% elif request.user.is_agent %}
+<h3>Welcome, Agent {{user.username|title}}</h3>
+
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="#" class="btn btn-secondary">Upload Profile</a>
+</div>
+
+
+{% else %}
+<h3>Upload Profile for Candidate </h3>
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="{% url 'candidate:form'%}" class="btn btn-secondary">Upload Profile</a>
+</div>
+{% endif %}
+{% endblock %}
+

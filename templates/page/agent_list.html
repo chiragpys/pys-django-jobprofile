@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} Agent List{% endblock %}
+{% block pagecontent %}
+
+<div class="container">
+    <h3>Agent List</h3>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Agent</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for agent in object_list %}
+        <tbody>
+        <tr>
+            <th scope="col">{{forloop.counter}}</th>
+            <th scope="col">{{agent.user}}</th>
+        </tr>
+        </tbody>
+        {% endfor %}
+        <a class="btn btn-outline-secondary" href="{% url 'users:home' %}"> Main Page</a>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

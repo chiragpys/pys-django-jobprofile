@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %} Manager List{% endblock %}
+{% block pagecontent %}
+
+<div class="container">
+    <h3>Manager List</h3>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Manager</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for manager in object_list %}
+        <tbody>
+        <tr>
+            <th scope="col">{{forloop.counter}}</th>
+            <th scope="col">{{manager.user}}</th>
+
+        </tr>
+        </tbody>
+        {% endfor %}
+        <a class="btn btn-outline-secondary" href="{% url 'users:home' %}"> Main Page</a>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

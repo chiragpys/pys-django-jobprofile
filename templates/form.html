@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Candidate profile {% endblock %}
+
+<script>
+    .hidden{
+        display: None
+    }
+</script>
+
+{% block pagecontent %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div id="default-form-list" class="form-group">
+        {{ form.as_p}}
+    </div>
+    <div id="study-form" class="hidden">
+        {{ candidate_study.as_p }}
+    </div>
+<!--    <button id="add-more" type="button">Add more</button>-->
+        {{ candidate_experience.as_p }}
+        {{ candidate_skill.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    const addMoreBtn = document.getElementById('add-more')
+    addMoreBtn.addEventListener('click', add_new_form)
+    function add_new_form(event){
+        if (event) {
+            event.preventDefault()
+        }
+<!--        const currentForm = document.getElementByClassName('form-group')-->
+<!--        const currentForm = currentForm.length-->
+        const formCopTarget = document.getElementById('default-form-list')
+        const emptyFormEl = document.getElementById('study-form').cloneNode(true)
+        emptyFormEl.setAttribute('class', 'form-group')
+        emptyFormEl.setAttribute('id', '')
+        formCopTarget.append(emptyFormEl)
+
+    }
+</script>
+{% endblock %}
+
