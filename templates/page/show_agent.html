@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} Manager List{% endblock %}
+{% block pagecontent %}
+
+<div class="container">
+    <h3>All Agent request</h3>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Agent</th>
+        </tr>
+        </thead>
+        {% for agent in all_agent %}
+        <tbody>
+        <tr>
+            <th scope="col">{{forloop.counter}}</th>
+            <th scope="col"><a href="{% url 'users:allrequest-agent' agent.pk %}">{{agent.user}}</a></th>
+        </tbody>
+        {% endfor %}
+        </tr>
+
+        <a class="btn btn-outline-secondary" href="{% url 'users:home' %}"> Main Page</a>
+        <a class="btn btn-outline-secondary" href="{% url 'users:admin-show-request' %}"> Back</a>
+    </table>
+</div>
+
+{% endblock %}
+

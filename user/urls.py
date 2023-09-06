@@ -14,5 +14,9 @@ urlpatterns = [
     path('agent-list', AgentList.as_view(), name='agent-list'),
     path('candidate', CandidateRequestView.as_view(), name='candidate-list'),
     path('download/<int:pk>', download_file.as_view(), name='download'),
-    path('candidate/update/<int:pk>', CandidateRequestUpdate.as_view(), name='candidate-update')
+    path('candidate/update/<int:pk>', CandidateRequestUpdate.as_view(), name='candidate-update'),
+    path('admin-show-request/', AdminShowRequest.as_view(), name='admin-show-request'),
+    path('allagentshow/<int:pk>', AdminShowAgent.as_view(), name='All-agent'),
+    path('allrequest-agent/<int:pk>', ShowAllRequestAdmin.as_view(), name='allrequest-agent')
+
 ]

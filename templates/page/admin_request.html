@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %} Total request{% endblock %}
+{% block pagecontent %}
+
+<div class="container">
+    <h3>Total Request</h3>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Manager</th>
+            </tr>
+            </thead>
+            {% for manager in managers %}
+            <tbody>
+            <tr>
+                <th scope="col">{{forloop.counter}}</th>
+                <th scope="col"><a href="{% url 'users:All-agent' manager.pk %}">{{manager.user}}</a></th>
+            </tr>
+            </tbody>
+            {% endfor %}
+            <a class="btn btn-outline-secondary" href="{% url 'users:home' %}"> Main Page</a>
+        </table>
+</div>
+
+{% endblock %}
+

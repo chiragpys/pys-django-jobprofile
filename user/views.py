@@ -167,11 +167,30 @@ class CandidateRequestUpdate(UpdateView):
 
 
 class AdminShowRequest(ListView):
-    template_name = 'page/manager_list.html'
+    template_name = 'page/admin_request.html'
     model = Manager
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs, ):
         context = super().get_context_data()
 
         if self.request.user.is_superuser:
-            pass
+            context['managers'] = Manager.objects.all()
+            return context
+
+
+class AdminShowAgent(View):
+    template_name = 'page/show_agent.html'
+    model = Agent
+
+    def get(self, request, pk):
+        all_agent = Agent.objects.filter(manage_id=pk)
+        return render(request, self.template_name, {'all_agent': all_agent})
+
+
+class ShowAllRequestAdmin(View):
+    template_name = 'page/show_all_agent_request_admin.html'
+
+    def get(self, request, pk):
+        candidates = CandidateProfile.objects.filter(
+            reference_details__in=Agent.objects.filter(user_id=pk).values_list('code'))
+        return render(request, self.template_name, {'candidates': candidates})
