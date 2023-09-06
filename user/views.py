@@ -194,3 +194,14 @@ class ShowAllRequestAdmin(View):
         candidates = CandidateProfile.objects.filter(
             reference_details__in=Agent.objects.filter(user_id=pk).values_list('code'))
         return render(request, self.template_name, {'candidates': candidates})
+
+
+class AdminAllRequest(View):
+
+    def get(self, request):
+        manager_list = Manager.objects.filter().values_list('user_id', flat=True)
+        agent_list = Agent.objects.filter(manage_id__in=manager_list).values_list('user_id', flat=True)
+        agent_code = Agent.objects.filter(manage_id__in=manager_list).values_list('code', flat=True)
+        candidates = CandidateProfile.objects.filter(reference_details__in=agent_code)
+
+
