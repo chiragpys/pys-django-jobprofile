@@ -28,18 +28,11 @@ class CreateCandidateProfile(CreateView):
         candidate_skill = self.get_form(form_class=SkillForm)
         candidate_skill.instance.candidate_id = candidate.id
         if candidate_study.is_valid() and candidate_experience.is_valid() and candidate_skill.is_valid():
-            pass
 
-        #     study_instances = []
-        #     for data in candidate_study.data:
-        #         print(data, "@@@@@@@@@@@@@@@@@@@@@@@@@")
-        #
-        #
-        #
-        # if candidate_study.instance.school != None:
-        #     candidate_study.save()
-        # if candidate_experience.instance.company != None:
-        #     candidate_experience.save()
-        # if candidate_skill.instance.technical != None and candidate_skill.instance.language != None:
-        #     candidate_skill.save()
+            if candidate_study.instance.school != None:
+                candidate_study.save()
+            if candidate_experience.instance.company != None:
+                candidate_experience.save()
+            if candidate_skill.instance.technical != None and candidate_skill.instance.language != None:
+                candidate_skill.save()
         return super().form_valid(form)

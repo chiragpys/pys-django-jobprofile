@@ -6,6 +6,17 @@ Gender = (
     ('Male', 'Male'),
     ('Female', 'Female'),
 )
+Profile_status = (
+    ("new", _("New")),
+    ("active", _("Active")),
+    ("rejected", _("Rejected")),
+    ("assigned", _("Assigned")),
+    ("closed", _("Closed")),
+)
+Reference_media = (
+    ('agent', _('Agent')),
+    ('other', _('Other'))
+)
 
 
 class CandidateProfile(models.Model):
@@ -15,6 +26,9 @@ class CandidateProfile(models.Model):
     gender = models.CharField(_("Gender"), max_length=10, default="Male", choices=Gender)
     mobile_no = models.CharField(_("Mobile No"), max_length=10)
     email = models.EmailField(_("Email Id"), max_length=100, unique=True)
+    reference = models.CharField(_("Your Reference"), max_length=50, choices=Reference_media, default="other")
+    reference_details = models.CharField(_("Reference Provider"), max_length=50, default='None')
+    profile_status = models.CharField(_("Profile Status"), max_length=50, choices=Profile_status, default='new')
     created = models.DateField(auto_now=True)
     address = models.TextField(_("Address"), null=True, blank=True)
     photo = models.ImageField(upload_to='images', blank=True, null=True)
@@ -42,6 +56,7 @@ class ExperienceDetail(models.Model):
     start_date = models.DateField(_("Join date"), null=True, blank=True)
     end_date = models.DateField(_("End date"), null=True, blank=True)
     discription = models.TextField(_("Job discription "), null=True, blank=True)
+    resume = models.FileField(upload_to='documents', null=True, blank=True, default='None')
 
     def __str__(self):
         return f"{self.company}"

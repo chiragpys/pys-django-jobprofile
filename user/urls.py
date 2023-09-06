@@ -12,4 +12,7 @@ urlpatterns = [
     path('manager-list', ManagerList.as_view(), name='manager-list'),
     path('agent-assign', AssignAgentView.as_view(), name='agent-assign'),
     path('agent-list', AgentList.as_view(), name='agent-list'),
+    path('candidate', CandidateRequestView.as_view(), name='candidate-list'),
+    path('download/<int:pk>', download_file.as_view(), name='download'),
+    path('candidate/update/<int:pk>', CandidateRequestUpdate.as_view(), name='candidate-update')
 ]

@@ -1,15 +1,17 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LogoutView
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 
 from .forms import UserRegisterForm, UserLoginForm, CreateStaffForm
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView, View
 from .models import User, Agent, Manager
 from django.contrib import messages
+from candidate.models import CandidateProfile, ExperienceDetail
 
 
 class UserCreateView(CreateView):
@@ -39,8 +41,6 @@ class LoginView(View):
             return redirect('users:home')
 
     def post(self, request):
-        # import pdb
-        # pdb.set_trace()
         if request.session.get('user') is None:
             form = self.form_class(request.POST)
             username = request.POST["username"]
@@ -106,8 +106,6 @@ class AssignAgentView(CreateView):
     success_message = "Agent assign successful"
 
     def form_valid(self, form):
-        import pdb
-        pdb.set_trace()
         form.instance.manage_id = self.request.user.id
         user_id = form.instance.user_id
         if user_id:
@@ -124,7 +122,56 @@ class AgentList(ListView):
     model = Agent
 
     def get_queryset(self):
-        # import pdb
-        # pdb.set_trace()
         agent_list = Agent.objects.filter(manage_id=self.request.user.id)
         return agent_list
+
+
+class CandidateRequestView(ListView):
+    model = CandidateProfile
+    template_name = 'page/candidate_request.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+
+        # import pdb
+        # pdb.set_trace()
+        if self.request.user.is_manager:
+            context['other'] = CandidateProfile.objects.filter(reference='other')
+            context['all_agent_candidates'] = CandidateProfile.objects.filter(
+                reference_details__in=self.request.user.manager.agent.all().values_list('code', flat=True))
+            return context
+        elif self.request.user.is_agent:
+            context['candidates'] = CandidateProfile.objects.filter(reference_details=self.request.user.agent.code)
+            return context
+
+
+class download_file(View):
+    def get(self, request, pk):
+        file_download = ExperienceDetail.objects.filter(candidate__id=pk).first().resume
+        if file_download.name == 'None':
+            messages.error(request, 'No Resume Upload')
+            return redirect('users:candidate-list')
+        else:
+            name = file_download.name.strip('documents/')
+            response = HttpResponse(file_download.file, content_type='application/force-download')
+            response['Content-Disposition'] = f'filename="{name}"'
+            return response
+
+
+class CandidateRequestUpdate(UpdateView):
+    model = CandidateProfile
+    template_name = 'page/candidate_profile_update.html'
+    fields = ['profile_status']
+    success_url = reverse_lazy("users:candidate-list")
+    success_message = "Profile was Updated successfully"
+
+
+class AdminShowRequest(ListView):
+    template_name = 'page/manager_list.html'
+    model = Manager
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+
+        if self.request.user.is_superuser:
+            pass

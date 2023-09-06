@@ -7,6 +7,7 @@
     .hidden{
         display: None
     }
+
 </script>
 
 {% block pagecontent %}
@@ -22,13 +23,17 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div id="default-form-list" class="form-group">
+        <h5><b>Personal details</b></h5>
         {{ form.as_p}}
     </div>
     <div id="study-form" class="hidden">
+        <h5><b>Study details</b></h5>
         {{ candidate_study.as_p }}
     </div>
 <!--    <button id="add-more" type="button">Add more</button>-->
+    <h5><b>Experience details</b></h5>
         {{ candidate_experience.as_p }}
+        <h5><b>Skill details</b></h5>
         {{ candidate_skill.as_p }}
     <button type="submit">Submit</button>
 </form>

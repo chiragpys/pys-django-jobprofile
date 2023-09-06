@@ -30,6 +30,11 @@
     <a href="#" class="btn btn-secondary">Create User</a>
 </div>
 
+<div class="mt-4 pt-2">
+<!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
+    <a href="#" class="btn btn-secondary">Total Request</a>
+</div>
+
 
 {% elif request.user.is_manager %}
 <h3>Welcome, Manager {{user.username|title}}</h3>
@@ -51,7 +56,7 @@
 
 <div class="mt-4 pt-2">
 <!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
-    <a href="#" class="btn btn-secondary">Total Request</a>
+    <a href="{% url 'users:candidate-list'%}" class="btn btn-secondary">Total Request</a>
 </div>
 
 
@@ -60,7 +65,7 @@
 
 <div class="mt-4 pt-2">
 <!--    <input class="btn btn-primary " type="submit" value="Submit"/>-->
-    <a href="#" class="btn btn-secondary">Upload Profile</a>
+    <a href="{% url 'users:candidate-list'%}" class="btn btn-secondary">Total Request</a>
 </div>
 
 
