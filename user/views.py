@@ -199,9 +199,30 @@ class ShowAllRequestAdmin(View):
 class AdminAllRequest(View):
 
     def get(self, request):
-        manager_list = Manager.objects.filter().values_list('user_id', flat=True)
-        agent_list = Agent.objects.filter(manage_id__in=manager_list).values_list('user_id', flat=True)
-        agent_code = Agent.objects.filter(manage_id__in=manager_list).values_list('code', flat=True)
-        candidates = CandidateProfile.objects.filter(reference_details__in=agent_code)
 
+        # managers = Manager.objects.filter()
+        # manager_list = managers.values_list('user_id', flat=True)
+        # agent_list = Agent.objects.filter(manage_id__in=manager_list).values_list('user__username', flat=True)
+        # agent_code = Agent.objects.filter(manage_id__in=manager_list).values_list('code', flat=True)
+        # candidates = CandidateProfile.objects.filter(reference_details__in=agent_code)
+        # import pdb
+        # pdb.set_trace()
 
+        managers = Manager.objects.filter()
+        manager_list = managers.values_list('user__username', flat=True)
+        agent_list = Agent.objects.filter(manage__in=managers)
+        candidates = CandidateProfile.objects.filter(reference_details__in=agent_list.values_list('code', flat=True))
+
+        data = {}
+
+        for manager in manager_list:
+            data[manager] = {}
+            for agent in agent_list.filter(manage__user__username=manager):
+                agent_username = agent.user.username
+                data[manager][agent_username] = []
+
+                for candidate in candidates.filter(reference_details=agent.code):
+                    data[manager][agent_username].append(candidate)
+
+        context = {'data': data}
+        return render(request, 'page/admin_request.html', context)

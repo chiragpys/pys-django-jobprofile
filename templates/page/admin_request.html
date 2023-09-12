@@ -2,26 +2,107 @@
 {% block title %} Total request{% endblock %}
 {% block pagecontent %}
 
-<div class="container">
-    <h3>Total Request</h3>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Manager</th>
-            </tr>
-            </thead>
-            {% for manager in managers %}
-            <tbody>
-            <tr>
-                <th scope="col">{{forloop.counter}}</th>
-                <th scope="col"><a href="{% url 'users:All-agent' manager.pk %}">{{manager.user}}</a></th>
-            </tr>
-            </tbody>
+<!--<div class="container">-->
+<!--    <h3>Total Request</h3>-->
+<!--    <table class="table">-->
+<!--        <thead class="thead-dark">-->
+<!--        <tr>-->
+<!--            <th scope="col">Id</th>-->
+<!--            <th scope="col">Manager</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        {% for manager in managers %}-->
+<!--        <tbody>-->
+<!--        <tr>-->
+<!--            <th scope="col">{{forloop.counter}}</th>-->
+<!--            <th scope="col"><a href="#">{{manager.user}}</a></th>-->
+<!--            {% for agent in agent_list%}-->
+<!--        <tr>-->
+<!--            <th scope="col">{{forloop.counter}}</th>-->
+<!--            <th scope="col"><a href="#">{{agent}}</a></th>-->
+<!--        </tr>-->
+<!--        {% endfor %}-->
+<!--        </tr>-->
+<!--        {% for candidate in candidates %}-->
+<!--        <tbody>-->
+<!--        <tr>-->
+<!--            <th scope="col">{{forloop.counter}}</th>-->
+<!--            <th scope="col">{{candidacounterte.created}}</th>-->
+<!--            <th scope="col">{{candidate.name}} {{candidate.last_name}}</th>-->
+<!--            <th scope="col">{{candidate.mobile_no}}</th>-->
+<!--            <th scope="col">{{candidate.email}}</th>-->
+<!--            <th scope="col">{{candidate.gender}}</th>-->
+<!--            <th scope="col">{{candidate.reference_details}}</th>-->
+<!--            <th scope="col"><a href="{% url 'users:download' candidate.pk %}"><i class="fa fa-download" aria-hidden="true"></i></a>-->
+<!--            </th>-->
+<!--            <th scope="col">{{candidate.profile_status}}</th>-->
+<!--            <th scope="col"><a href="{% url 'users:candidate-update' candidate.pk %}">Open</a></th>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--        {% endfor %}-->
+<!--        </tbody>-->
+<!--        {% endfor %}-->
+<!--        <a class="btn btn-outline-secondary" href="{% url 'users:home' %}"> Main Page</a>-->
+<!--    </table>-->
+<!--</div>-->
+{% block head %}
+<style>
+    .dropdown-menu {
+        width: 100%;
+        left: 0;
+        right: 0;
+        border-radius: 0;
+    }
+
+</style>
+{% endblock %}
+
+<h3>Show Request</h3>
+
+<ul>
+    {% for manager, agent in data.items %}
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; margin: 10px 0; padding: 10px; ">
+            {{ manager }}
+        </button>
+        <!--        <li class="dropdown-item" style="color:blue">{{ manager }}</li>-->
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            {% for agent , candidates in agent.items %}
+            <li class="dropdown-item dropdown-toggle" id="multilevelDropdownMenu1" data-bs-toggle="dropdown"
+                aria-expanded="false">{{ agent }}
+            </li>
+            <ul class="dropdown-menu" aria-labelledby="multilevelDropdownMenu1">
+                {% for candidate in candidates %}
+                <ul class="dropdown-tem">
+                    <p>ID: {{ candidate.id }}</p>
+                    <p>Name: {{ candidate.name }}</p>
+                    <p>Last Name: {{ candidate.last_name }}</p>
+                </ul><hr>
+                {% empty %}
+                <li>No candidates for this agent</li>
+                {% endfor %}
+            </ul>
+            {% empty %}
+            <li>No agents for this manager</li>
             {% endfor %}
-            <a class="btn btn-outline-secondary" href="{% url 'users:home' %}"> Main Page</a>
-        </table>
-</div>
+        </ul>
+        {% empty %}
+        <li>No managers found</li>
+        {% endfor %}
+    </div>
+</ul>
+
+<script>
+    let dropdowns = document.querySelectorAll('.dropdown-toggle')
+    dropdowns.forEach((dd)=>{
+    dd.addEventListener('click', function (e) {
+        var el = this.nextElementSibling
+        el.style.display = el.style.display==='block'?'none':'block'
+    })
+})
+</script>
+
 
 {% endblock %}
 

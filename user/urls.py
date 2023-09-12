@@ -15,8 +15,11 @@ urlpatterns = [
     path('candidate', CandidateRequestView.as_view(), name='candidate-list'),
     path('download/<int:pk>', download_file.as_view(), name='download'),
     path('candidate/update/<int:pk>', CandidateRequestUpdate.as_view(), name='candidate-update'),
-    path('admin-show-request/', AdminShowRequest.as_view(), name='admin-show-request'),
-    path('allagentshow/<int:pk>', AdminShowAgent.as_view(), name='All-agent'),
-    path('allrequest-agent/<int:pk>', ShowAllRequestAdmin.as_view(), name='allrequest-agent')
+
+    # path('admin-show-request/', AdminShowRequest.as_view(), name='admin-show-request'),
+    # path('allagentshow/<int:pk>', AdminShowAgent.as_view(), name='All-agent'),
+    # path('allrequest-agent/<int:pk>', ShowAllRequestAdmin.as_view(), name='allrequest-agent')
+
+    path('admin-show-request/', AdminAllRequest.as_view(), name='admin-show-request'),
 
 ]
